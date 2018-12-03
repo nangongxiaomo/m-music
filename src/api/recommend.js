@@ -4,6 +4,7 @@ import { commonParams, options } from './config'
 
 //const debug = process.env.NODE_ENV !== 'production'
 
+//获取轮播图
 export function getRecommend() {
   const url =
     'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
@@ -17,6 +18,7 @@ export function getRecommend() {
   return jsonp(url, data, options)
 }
 
+//获取歌单列表
 export function getDiscList() {
   const url = '/api/getDiscList'
 

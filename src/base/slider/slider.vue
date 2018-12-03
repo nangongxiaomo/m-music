@@ -15,14 +15,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-import BScroll from "better-scroll";
-import { addClass } from "common/js/dom";
+import BScroll from 'better-scroll'
+import { addClass } from 'common/js/dom'
 export default {
   data() {
     return {
       dots: [],
       currentPageIndex: 0
-    };
+    }
   },
   props: {
     loop: {
@@ -40,26 +40,28 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this._setSliderWidth();
-      this._initDots();
-      this._initSlider();
-    }, 20);
+      this._setSliderWidth()
+      this._initDots()
+      this._initSlider()
+
+      this.play()
+    }, 20)
   },
   methods: {
     _setSliderWidth() {
-      this.children = this.$refs.sliderGroup.children;
-      let width = 0;
-      let sliderWidth = this.$refs.slider.clientWidth;
+      this.children = this.$refs.sliderGroup.children
+      let width = 0
+      let sliderWidth = this.$refs.slider.clientWidth
       for (let i = 0; i < this.children.length; i++) {
-        let child = this.children[i];
-        addClass(child, "slider-item");
-        child.style.width = sliderWidth + "px";
-        width += sliderWidth;
+        let child = this.children[i]
+        addClass(child, 'slider-item')
+        child.style.width = sliderWidth + 'px'
+        width += sliderWidth
       }
       if (this.loop) {
-        width += 2 * sliderWidth;
+        width += 2 * sliderWidth
       }
-      this.$refs.sliderGroup.style.width = width + "px";
+      this.$refs.sliderGroup.style.width = width + 'px'
     },
     _initSlider() {
       this.slider = new BScroll(this.$refs.slider, {
@@ -71,21 +73,33 @@ export default {
           threshold: 0.3,
           speed: 400
         }
-      });
-      this.slider.on("scrollEnd", () => {
-        let pageIndex = this.slider.getCurrentPage().pageX;
-
-        this.currentPageIndex = pageIndex;
-      });
+      })
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+       
+        this.currentPageIndex = pageIndex
+        if (this.autoPlay) {
+          this.play()
+        }
+      })
     },
     _initDots() {
-      this.dots = new Array(this.children.length);
+      this.dots = new Array(this.children.length)
+    },
+    play() {
+      let pageIndex = this.currentPageIndex + 1
+      if (this.loop) {
+        pageIndex += 1
+      }
+      this.timer = setTimeout(() => {
+        this.slider.next()
+      }, this.interval)
     }
   },
   destroyed() {
     clearTimeout(this.timer)
-  },
-};
+  }
+}
 </script>
 
 <style lang="stylus" scoped>

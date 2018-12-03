@@ -32,40 +32,41 @@
 </template>
 
 <script>
-import Slider from 'base/slider/slider';
-import Scroll from 'base/scroll/scroll';
-import Loading from 'base/loading/loading';
-import { getRecommend, getDiscList } from 'api/recommend';
-import { ERR_OK } from 'api/config';
+import Slider from 'base/slider/slider'
+import Scroll from 'base/scroll/scroll'
+import Loading from 'base/loading/loading'
+import { getRecommend, getDiscList } from 'api/recommend'
+import { ERR_OK } from 'api/config'
 export default {
   data() {
     return {
       slider: [],
       discList: []
-    };
+    }
   },
   created() {
-    this._getRecommend();
-    this._getDiscList();
+    this._getRecommendSlider() //获取轮播图
+    this._getDiscList() //获取歌单列表
   },
   methods: {
-    _getRecommend() {
+    _getRecommendSlider() {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {
-          this.slider = res.data.slider;
+          this.slider = res.data.slider
         }
-      });
+      })
     },
     _getDiscList() {
       getDiscList().then(res => {
         if (res.code === ERR_OK) {
-          this.discList = res.data.list;
+          console.log(res)
+          this.discList = res.data.list
         }
-      });
+      })
     },
     loadImage() {
       if (!this.checkLoading) {
-        this.$refs.scroll.refresh();
+        this.$refs.scroll.refresh()
       }
     }
   },
@@ -74,7 +75,7 @@ export default {
     Scroll,
     Loading
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
