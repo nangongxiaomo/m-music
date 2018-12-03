@@ -8,20 +8,19 @@
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style lang="stylus" scoped>
-@import '~common/stylus/variable';
+@import '~common/stylus/variable'
 .tabs
   height 45px
   padding 0 20px
   display flex
   justify-content space-between
   align-items center
-
-  .tab-item 
-    padding-bottom 5px 
+  .tab-item
+    padding-bottom 5px
     color $color-text-l
     &.router-link-active
       border-bottom 2px solid $color-theme
