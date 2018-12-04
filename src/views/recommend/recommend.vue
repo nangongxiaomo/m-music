@@ -13,7 +13,7 @@
         </div>
         <h1 class="hot-title">热门推荐</h1>
         <ul>
-          <li :key="item.dissid" class="item" v-for="item in discList">
+          <li :key="item.dissid" @click="clickItem(item)" class="item" v-for="item in discList">
             <div class="icon">
               <img height="60" v-lazy="item.imgurl" width="60">
             </div>
@@ -68,6 +68,9 @@ export default {
       if (!this.checkLoading) {
         this.$refs.scroll.refresh()
       }
+    },
+    clickItem(item){
+      console.log(item)
     }
   },
   components: {

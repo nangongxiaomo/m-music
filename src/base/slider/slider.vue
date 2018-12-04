@@ -35,7 +35,7 @@ export default {
     },
     interval: {
       type: Number,
-      default: 5000
+      default: 4000
     }
   },
   mounted() {
@@ -43,8 +43,9 @@ export default {
       this._setSliderWidth()
       this._initDots()
       this._initSlider()
-
-      this.play()
+      if (this.autoPlay) {
+        this.play()
+      }
     }, 20)
   },
   methods: {
@@ -76,7 +77,7 @@ export default {
       })
       this.slider.on('scrollEnd', () => {
         let pageIndex = this.slider.getCurrentPage().pageX
-       
+
         this.currentPageIndex = pageIndex
         if (this.autoPlay) {
           this.play()
