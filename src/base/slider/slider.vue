@@ -35,7 +35,7 @@ export default {
     },
     interval: {
       type: Number,
-      default: 4000
+      default: 5000
     }
   },
   mounted() {
