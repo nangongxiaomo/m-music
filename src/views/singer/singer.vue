@@ -1,6 +1,6 @@
 <template>
   <div class="singer" ref="singer">
-    <list-view :data="singerList"></list-view>
+    <list-view :data="singerList" @handleClick="clickItem"></list-view>
   </div>
 </template>
 
@@ -71,7 +71,10 @@ export default {
       ret.sort((a, b) => {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
-      return hot.concat(ret)
+      return [...hot,...ret]
+    },
+    clickItem(item){
+      console.log(item)
     }
   },
   components: {

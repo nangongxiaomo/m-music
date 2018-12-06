@@ -4,7 +4,12 @@
       <li v-for="(group,index) in data" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item" :key="item.id">
+          <li
+            v-for="item in group.items"
+            class="list-group-item"
+            :key="item.id"
+            @click="clickItem(item)"
+          >
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -21,7 +26,7 @@
           v-for="(item, index) in shortcutList"
           :data-index="index"
           class="item"
-          :key="index"
+          :key="item"
           :class="{'current':currentIndex===index}"
         >{{item}}</li>
       </ul>
@@ -50,6 +55,11 @@ export default {
       return this.data.map(item => {
         return item.title.substr(0, 1)
       })
+    }
+  },
+  methods: {
+    clickItem(item) {
+      this.$emit('handleClick', item)
     }
   },
   components: {
