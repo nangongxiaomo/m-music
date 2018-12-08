@@ -1,5 +1,12 @@
 <template>
-  <scroll :data="data" class="list-view">
+  <scroll
+    :data="data"
+    class="list-view"
+    ref="listView"
+    :listenScroll="listenScroll"
+    :probeType="probeType"
+    @scroll="scroll"
+  >
     <ul>
       <li v-for="(group,index) in data" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
@@ -18,7 +25,7 @@
     </ul>
     <div
       class="list-shortcut"
-      @touchstart.stop.prevent="onShortcutTouchStart"
+      @touchstart="onShortcutTouchStart"
       @touchmove.stop.prevent="onShortcutTouchMove"
     >
       <ul>
@@ -31,6 +38,9 @@
         >{{item}}</li>
       </ul>
     </div>
+    <div class="list-fixed" v-show="fixedTitle" ref="fixed">
+      <div class="fixed-title">{{fixedTitle}}</div>
+    </div>
     <div class="loading-container" v-show="!data.length">
       <loading></loading>
     </div>
@@ -40,6 +50,9 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import { getDataAttr } from 'common/js/dom'
+const ANCHOR_HEIGHT = 18 //字母元素高度
+const TITLE_HEIGHT = 30 //固定title高度
 export default {
   props: {
     data: Array,
@@ -47,19 +60,114 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0
+      currentIndex: 0,
+      scrollY: -1,
+      diff: -1
     }
+  },
+  created() {
+    this.touch = {}
+    this.listenScroll = true
+    this.probeType = 3
+    this.listHeight = []
   },
   computed: {
     shortcutList() {
       return this.data.map(item => {
         return item.title.substr(0, 1)
       })
+    },
+    fixedTitle() {
+      if (this.scrollY > 0) {
+        return ''
+      }
+      return this.data[this.currentIndex]
+        ? this.data[this.currentIndex].title
+        : ''
     }
   },
   methods: {
     clickItem(item) {
       this.$emit('handleClick', item)
+    },
+    onShortcutTouchStart(e) {
+      let anchorIndex = getDataAttr(e.target, 'index')
+      let firstTouch = e.touches[0]
+      this.touch.y1 = firstTouch.pageY
+      this.touch.anchorIndex = anchorIndex
+      this._scrollTo(anchorIndex)
+    },
+    onShortcutTouchMove(e) {
+      let firstTouch = e.touches[0]
+      this.touch.y2 = firstTouch.pageY
+      let delta = ((this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT) | 0
+      let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+      this._scrollTo(anchorIndex)
+    },
+    scroll(pos) {
+      this.scrollY = pos.y
+    },
+    _calculateHeight() {
+      this.listHeight = []
+      const list = this.$refs.listGroup
+      let height = 0
+      this.listHeight.push(height)
+      for (let index = 0; index < list.length; index++) {
+        const element = list[index]
+        height += element.clientHeight
+        this.listHeight.push(height)
+      }
+    },
+    _scrollTo(index) {
+      if (!index && index !== 0) {
+        return
+      }
+      if (index < 0) {
+        index = 0
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
+      }
+      this.scrollY = -this.listHeight[index]
+
+      this.$refs.listView.scrollToElement(this.$refs.listGroup[index], 0)
+    }
+  },
+  watch: {
+    data() {
+      setTimeout(() => {
+        this._calculateHeight()
+      }, 20)
+    },
+    scrollY(newY) {
+      const listHeight = this.listHeight
+      //当滚动顶部时 newY大于0
+      if (newY > 0) {
+        this.currentIndex = 0
+        return
+      }
+
+      //在中间位置滚动时
+      for (let i = 0; i < listHeight.length - 1; i++) {
+        const item = listHeight[i]
+        let height1 = listHeight[i]
+        let height2 = listHeight[i + 1]
+        if (-newY >= height1 && -newY < height2) {
+          this.currentIndex = i
+          this.diff = height2 + newY
+          return
+        }
+      }
+      //滚动到底部
+      this.currentIndex = listHeight.length - 2
+    },
+    diff(newVal) {
+      let fixedTop =
+        newVal > 0 && newVal < TITLE_HEIGHT ? newVal - TITLE_HEIGHT : 0
+      if (this.fixedTop === TITLE_HEIGHT) {
+        return
+      }
+      this.fixedTop = fixedTop
+      this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
     }
   },
   components: {

@@ -18,6 +18,7 @@ module.exports = {
     }
   },
   devServer: {
+    open: true,
     before(app) {
       app.use(bodyParser.urlencoded({ extended: true }))
       const querystring = require('querystring')
