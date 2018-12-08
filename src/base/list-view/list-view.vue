@@ -154,6 +154,7 @@ export default {
         if (-newY >= height1 && -newY < height2) {
           this.currentIndex = i
           this.diff = height2 + newY
+          console.log(this.diff)
           return
         }
       }
@@ -166,7 +167,6 @@ export default {
       if (this.fixedTop === TITLE_HEIGHT) {
         return
       }
-      this.fixedTop = fixedTop
       this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
     }
   },
