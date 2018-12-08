@@ -92,15 +92,15 @@ export default {
     },
     onShortcutTouchStart(e) {
       let anchorIndex = getDataAttr(e.target, 'index')
-      let firstTouch = e.touches[0]
-      this.touch.y1 = firstTouch.pageY
+      let touches = e.touches[0]
+      this.touch.startY = touches.pageY
       this.touch.anchorIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     onShortcutTouchMove(e) {
-      let firstTouch = e.touches[0]
-      this.touch.y2 = firstTouch.pageY
-      let delta = ((this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT) | 0
+      let touches = e.touches[0]
+      this.touch.endY = touches.pageY
+      let delta = ((this.touch.endY - this.touch.startY) / ANCHOR_HEIGHT) | 0
       let anchorIndex = parseInt(this.touch.anchorIndex) + delta
       this._scrollTo(anchorIndex)
     },
@@ -149,12 +149,11 @@ export default {
       //在中间位置滚动时
       for (let i = 0; i < listHeight.length - 1; i++) {
         const item = listHeight[i]
-        let height1 = listHeight[i]
-        let height2 = listHeight[i + 1]
-        if (-newY >= height1 && -newY < height2) {
+        let minHeight = listHeight[i]
+        let maxHeight = listHeight[i + 1]
+        if (-newY >= minHeight && -newY < maxHeight) {
           this.currentIndex = i
-          this.diff = height2 + newY
-          console.log(this.diff)
+          this.diff = maxHeight + newY
           return
         }
       }
