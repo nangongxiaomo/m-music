@@ -164,7 +164,7 @@ export default {
     diff(newVal) {
       let fixedTop =
         newVal > 0 && newVal < TITLE_HEIGHT ? newVal - TITLE_HEIGHT : 0
-      if (this.fixedTop === TITLE_HEIGHT) {
+      if (fixedTop === TITLE_HEIGHT) {
         return
       }
       this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
