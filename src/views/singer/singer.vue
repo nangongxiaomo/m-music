@@ -1,6 +1,7 @@
 <template>
   <div class="singer" ref="singer">
     <list-view :data="singerList" @handleClick="clickItem"></list-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -74,7 +75,7 @@ export default {
       return [...hot,...ret]
     },
     clickItem(item){
-      console.log(item)
+      this.$router.push(`/singer/${item.id}`)
     }
   },
   components: {

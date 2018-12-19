@@ -1,5 +1,5 @@
 <template>
-  <scroll
+  <scroll-view
     :data="data"
     class="list-view"
     ref="listView"
@@ -8,8 +8,8 @@
     @scroll="scroll"
   >
     <ul>
-      <li v-for="(group,index) in data" :key="index" class="list-group" ref="listGroup">
-        <h2 class="list-group-title">{{group.title}}</h2>
+      <li v-for="(group, index) in data" :key="index" class="list-group" ref="listGroup">
+        <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
           <li
             v-for="item in group.items"
@@ -18,7 +18,7 @@
             @click="clickItem(item)"
           >
             <img class="avatar" v-lazy="item.avatar">
-            <span class="name">{{item.name}}</span>
+            <span class="name">{{ item.name }}</span>
           </li>
         </ul>
       </li>
@@ -34,21 +34,21 @@
           :data-index="index"
           class="item"
           :key="item"
-          :class="{'current':currentIndex===index}"
-        >{{item}}</li>
+          :class="{ current: currentIndex === index }"
+        >{{ item }}</li>
       </ul>
     </div>
     <div class="list-fixed" v-show="fixedTitle" ref="fixed">
-      <div class="fixed-title">{{fixedTitle}}</div>
+      <div class="fixed-title">{{ fixedTitle }}</div>
     </div>
     <div class="loading-container" v-show="!data.length">
       <loading></loading>
     </div>
-  </scroll>
+  </scroll-view>
 </template>
 
 <script>
-import Scroll from 'base/scroll/scroll'
+import ScrollView from 'base/scroll-view/scroll-view'
 import Loading from 'base/loading/loading'
 import { getDataAttr } from 'common/js/dom'
 const ANCHOR_HEIGHT = 18 //字母元素高度
@@ -170,7 +170,7 @@ export default {
     }
   },
   components: {
-    Scroll,
+    ScrollView,
     Loading
   }
 }
