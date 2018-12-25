@@ -72,9 +72,9 @@ export default {
       ret.sort((a, b) => {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
-      return [...hot,...ret]
+      return [...hot, ...ret]
     },
-    clickItem(item){
+    clickItem(item) {
       this.$router.push(`/singer/${item.id}`)
     }
   },
