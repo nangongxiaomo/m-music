@@ -66,7 +66,6 @@ export default {
         }
       })
       if (diff_X_Y && diffX > MAX_DIFF && this.currentIndex > 0) {
-        console.log('right')
         this.transitionName = 'transitionRight'
         this.$router.push(this.routesList[this.currentIndex - 1].path)
       } else if (
@@ -74,7 +73,6 @@ export default {
         diffX < -MAX_DIFF &&
         this.currentIndex < routeLen - 1
       ) {
-        console.log('left')
         this.transitionName = 'transitionLeft'
         this.$router.push(this.routesList[this.currentIndex + 1].path)
       }
