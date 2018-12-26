@@ -98,7 +98,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .transitions
-  transition all 0.2s ease
+  transition all 0.3s ease
 .transitionLeft-enter, .transitionRight-leave-active
   transform translate3d(100%, 0, 0)
 .transitionRight-enter, .transitionLeft-leave-active
