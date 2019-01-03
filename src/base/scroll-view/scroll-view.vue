@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper">
+  <div ref="wrapper" class="scroll-view">
     <slot></slot>
   </div>
 </template>
@@ -72,5 +72,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+
 </style>
