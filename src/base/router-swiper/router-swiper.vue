@@ -15,7 +15,6 @@ export default {
       default: []
     }
   },
-
   data() {
     return {
       transitionName: 'transitionLeft',

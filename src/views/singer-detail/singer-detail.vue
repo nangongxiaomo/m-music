@@ -1,15 +1,20 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail">singer detail</div>
+    <div class="singer-detail">
+      <music-list></music-list>
+    </div>
   </transition>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import MusicList from 'views/music-list/music-list'
 export default {
   computed: {
     ...mapGetters(['singer'])
+  },
+  components: {
+    MusicList
   }
 }
 </script>
