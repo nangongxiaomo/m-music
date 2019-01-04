@@ -37,10 +37,11 @@ export default {
       }
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        listenScroll: this.listenScroll
       })
       if (this.listenScroll) {
-        let _this = this
+        const _this = this
         this.scroll.on('scroll', pos => {
           _this.$emit('scroll', pos)
         })
@@ -73,5 +74,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
 </style>

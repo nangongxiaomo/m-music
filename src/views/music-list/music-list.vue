@@ -4,11 +4,18 @@
       <i class="icon-back" @click="back"></i>
       <h1 class="title" v-html="title"></h1>
     </div>
-    <div class="bg-image" :style="bgStyle">
+    <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="filter"></div>
     </div>
-    <div class="bg-layer"></div>
-    <scroll-view :data="songs" class="list" style="top: 263px;">
+    <div class="bg-layer" ref="bgLayer"></div>
+    <scroll-view
+      :probe-type="probeType"
+      :listen-scroll="listenScroll"
+      :data="songs"
+      class="list"
+      @scroll="scroll"
+      ref="list"
+    >
       <div class="song-list-wrapper">
         <song-list :songs="songs"></song-list>
       </div>
@@ -19,12 +26,10 @@
 <script>
 import SongList from 'base/song-list/song-list'
 import ScrollView from 'base/scroll-view/scroll-view'
+
+const maxHeight = 40
 export default {
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
     bgImage: {
       type: String,
       default: ''
@@ -32,6 +37,15 @@ export default {
     songs: {
       type: Array,
       default: []
+    },
+    title: {
+      type: String,
+      default: ''
+    }
+  },
+  data() {
+    return {
+      scrollY: 0
     }
   },
   computed: {
@@ -39,14 +53,51 @@ export default {
       return `background-image:url(${this.bgImage})`
     }
   },
+  created() {
+    this.probeType = 3
+    this.listenScroll = true
+  },
+  mounted() {
+    this.imageHeight = this.$refs.bgImage.clientHeight
+    this.minTranslateY = -this.imageHeight + maxHeight
+
+    this.$refs.list.$el.style['top'] = this.$refs.bgImage.clientHeight + 'px'
+  },
   methods: {
     back() {
       this.$router.back()
+    },
+    scroll(pos) {
+      this.scrollY = pos.y
+    }
+  },
+  watch: {
+    scrollY(newY) {
+      let translateY = Math.max(this.minTranslateY, newY)
+      let scale = 1
+      this.$refs.bgLayer.style[
+        'transform'
+      ] = `translate3d(0, ${translateY}px,0)`
+      const persent = Math.abs(newY / this.imageHeight)
+      if (newY > 0) {
+        scale = 1 + persent
+      }
+      let zIndex = 0
+      if (newY < this.minTranslateY) {
+        zIndex = 10
+        this.$refs.bgImage.style.paddingBottom = 0
+        this.$refs.bgImage.style.height = maxHeight + 'px'
+      } else {
+        this.$refs.bgImage.style.paddingBottom = '70%'
+        this.$refs.bgImage.style.height = 0
+      }
+      this.$refs.bgImage.style.zIndex = zIndex
+      this.$refs.bgImage.style['transform'] = `scale(${scale})`
     }
   },
   components: {
-    SongList,
-    ScrollView
+    ScrollView,
+    SongList
   }
 }
 </script>
@@ -67,7 +118,7 @@ export default {
     left 0
     right 0
     height 40px
-    z-index 1
+    z-index 11
     .icon-back
       position absolute
       padding 10px
@@ -100,7 +151,6 @@ export default {
     background-color $color-background
   .list
     position absolute
-    top 263px
     width 100%
     bottom 0
   .song-list-wrapper
