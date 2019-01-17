@@ -22,7 +22,7 @@
           <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd">
-                <img src alt class="image">
+                <img :src="currentSong.image" alt class="image">
               </div>
             </div>
           </div>

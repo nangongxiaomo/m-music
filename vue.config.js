@@ -19,6 +19,7 @@ module.exports = {
   },
   devServer: {
     open: true,
+    hot: true,
     before(app) {
       app.use(bodyParser.urlencoded({ extended: true }))
       const querystring = require('querystring')
@@ -89,9 +90,11 @@ module.exports = {
         const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
         axios
           .post(url, req.body, {
-            headers: Object.assign({}, headers, {
+            headers: {
+              referer: 'https://y.qq.com/',
+              origin: 'https://y.qq.com',
               'Content-type': 'application/x-www-form-urlencoded'
-            })
+            }
           })
           .then(response => {
             res.json(response.data)
