@@ -37,8 +37,10 @@ import SongList from 'base/song-list/song-list'
 import ScrollView from 'base/scroll-view/scroll-view'
 import Loading from 'base/loading/loading'
 import { mapActions } from 'vuex'
+import { playListMixin } from 'common/js/mixin'
 const maxHeight = 40
 export default {
+  mixins: [playListMixin],
   props: {
     bgImage: {
       type: String,
@@ -74,6 +76,12 @@ export default {
     this.$refs.list.$el.style['top'] = this.$refs.bgImage.clientHeight + 'px'
   },
   methods: {
+    //mixin内定义的方法
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     random() {
       this.randomPlay({
         list: this.songs

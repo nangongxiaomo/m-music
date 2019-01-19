@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <scroll-view :data="discList" class="recommend-content" ref="scroll">
       <div>
         <div class="slider-wrapper" v-if="slider.length">
@@ -37,7 +37,9 @@ import ScrollView from 'base/scroll-view/scroll-view'
 import Loading from 'base/loading/loading'
 import { getRecommend, getDiscList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
+import {playListMixin} from 'common/js/mixin'
 export default {
+  mixins: [playListMixin],
   data() {
     return {
       slider: [],
@@ -49,6 +51,12 @@ export default {
     this._getDiscList() //获取歌单列表
   },
   methods: {
+    //mixin内定义的方法
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     _getRecommendSlider() {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {

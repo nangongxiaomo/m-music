@@ -1,6 +1,6 @@
 <template>
   <div class="singer" ref="singer">
-    <list-view :data="singerList" @handleClick="clickItem"></list-view>
+    <list-view ref="list" :data="singerList" @handleClick="clickItem"></list-view>
     <router-view></router-view>
   </div>
 </template>
@@ -11,11 +11,12 @@ import { ERR_OK } from 'api/config'
 import Singer from 'common/js/Singer'
 import ListView from 'base/list-view/list-view'
 import { mapMutations } from 'vuex'
-
+import {playListMixin} from 'common/js/mixin'
 const HOT_LENGTH = 10
 const HOT_NAME = '热门'
 
 export default {
+  mixins:[playListMixin],
   data() {
     return {
       singerList: []
@@ -25,6 +26,12 @@ export default {
     this._getSingerList()
   },
   methods: {
+    //mixin内定义的方法
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.singer.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     _getSingerList() {
       getSingerList().then(res => {
         if (res.code === ERR_OK) {

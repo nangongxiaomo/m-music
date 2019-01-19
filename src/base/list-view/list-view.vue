@@ -87,6 +87,9 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.$refs.listView.refresh()
+    },
     clickItem(item) {
       this.$emit('handleClick', item)
     },
