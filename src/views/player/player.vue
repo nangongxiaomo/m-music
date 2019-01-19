@@ -108,6 +108,7 @@
       @error="error"
       @timeupdate="updateTime"
       @ended="ended"
+      @paused="paused"
     ></audio>
   </div>
 </template>
@@ -257,6 +258,7 @@ export default {
     loop() {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
+      this.setPlayState(true)
       if (this.currentLyric) {
         this.currentLyric.seek(0)
       }
@@ -267,12 +269,19 @@ export default {
     open() {
       this.setFullscreen(true)
     },
+    paused(){
+      this.setPlayState(false)
+      if(this.currentLyric) {
+        this.currentLyric.stop()
+      }
+    },
     next() {
       if (!this.songReady) {
         return
       }
       if (this.playList.length === 1) {
         this.loop()
+        return
       } else {
         let index = this.currentIndex + 1
         if (index === this.playList.length) {
@@ -283,7 +292,6 @@ export default {
           this.togglePlay()
         }
       }
-      this.songReady = false
     },
     prev() {
       if (!this.songReady) {
@@ -298,7 +306,6 @@ export default {
         }
         this.setCurrentIndex(index)
       }
-      this.songReady = false
     },
     updateTime(event) {
       this.currentTime = event.target.currentTime //当前播放时间
@@ -343,9 +350,17 @@ export default {
       return num
     },
     ready() {
+      clearTimeout(this.timer)
+      // 监听 playing 这个事件可以确保慢网速或者快速切换歌曲导致的 DOM Exception
       this.songReady = true
+      this.canLyricPlay = true
+      // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
+      if (this.currentLyric && !this.isPureMusic) {
+        this.currentLyric.seek(this.currentTime * 1000)
+      }
     },
     error() {
+      clearTimeout(this.timer)
       this.songReady = true
     },
     enter(el, done) {
@@ -414,17 +429,30 @@ export default {
     })
   },
   watch: {
-    currentSong(newSong, oldSong) {
-      if (newSong === oldSong) {
-        return
-      }
-      if (this.currentLyric) {
-        this.currentLyric.stop()
-      }
-      this.setTimeout(() => {
-        this.$refs.audio.play()
-        this.getLyric()
-      }, 1000)
+    currentSong: {
+      handler(newSong, oldSong) {
+        if (!newSong.id) {
+          return
+        }
+        if (newSong.id === oldSong.id) {
+          return
+        }
+        this.songReady = false
+        if (this.currentLyric) {
+          this.currentLyric.stop()
+          // 重置为null
+          this.currentLyric = null
+          this.currentTime = 0
+          this.playingLyric = ''
+          this.currentLineNum = 0
+        }
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.$refs.audio.play()
+          this.getLyric()
+        }, 800)
+      },
+      sync: true
     },
     playing(newPlay) {
       const audio = this.$refs.audio

@@ -5,7 +5,6 @@ import router from './router/router'
 import store from './store/store'
 import fastClick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
-
 Vue.config.productionTip = false
 fastClick.attach(document.body)
 Vue.use(VueLazyload, {
