@@ -2,6 +2,9 @@
   <div class="song-list">
     <ul>
       <li v-for="(item,index) of songs" class="item" :key="index" @click="handleClick(item,index)">
+        <div class="rank" v-show="rank">
+          <span :class="getRankCls(index)">{{getRankTxt(index)}}</span>
+        </div>
         <div class="content">
           <h2 class="name">{{item.name}}</h2>
           <h2 class="desc">{{getDesc(item)}}</h2>
@@ -17,9 +20,25 @@ export default {
     songs: {
       type: Array,
       default: []
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
+    getRankCls(index) {
+      if (index <= 2) {
+        return `icon icon${index}`
+      } else {
+        return `text`
+      }
+    },
+    getRankTxt(index) {
+      if (index > 2) {
+        return index + 1
+      }
+    },
     getDesc(song) {
       return `${song.singer}·${song.album}`
     },

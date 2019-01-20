@@ -13,7 +13,13 @@ let router = new Router({
     },
     {
       path: '/recommend',
-      component: () => import('views/recommend/recommend')
+      component: () => import('views/recommend/recommend'),
+      children: [
+        {
+          path: ':id',
+          component: () => import('views/recommend-detail/recommend-detail')
+        }
+      ]
     },
     {
       path: '/singer',
@@ -27,7 +33,13 @@ let router = new Router({
     },
     {
       path: '/rank',
-      component: () => import('views/rank/rank')
+      component: () => import('views/rank/rank'),
+      children: [
+        {
+          path: ':id',
+          component: () => import('views/rank-detail/rank-detail')
+        }
+      ]
     },
     {
       path: '/search',

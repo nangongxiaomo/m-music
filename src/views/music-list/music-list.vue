@@ -23,7 +23,7 @@
       ref="list"
     >
       <div class="song-list-wrapper">
-        <song-list @handleClick="handleClick" :songs="songs"></song-list>
+        <song-list :rank="rank" @handleClick="handleClick" :songs="songs"></song-list>
       </div>
       <div class="loading-container" v-show="!songs.length">
         <loading></loading>
@@ -42,6 +42,10 @@ const maxHeight = 40
 export default {
   mixins: [playListMixin],
   props: {
+    rank: {
+      type: Boolean,
+      default: false
+    },
     bgImage: {
       type: String,
       default: ''
