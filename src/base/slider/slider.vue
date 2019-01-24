@@ -72,7 +72,7 @@ export default {
         snap: {
           loop: this.loop,
           threshold: 0.3,
-          speed: 1000
+          speed: 500
         }
       })
       this.slider.on('scrollEnd', () => {

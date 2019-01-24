@@ -43,7 +43,13 @@ let router = new Router({
     },
     {
       path: '/search',
-      component: () => import('views/search/search')
+      component: () => import('views/search/search'),
+      children: [
+        {
+          path: ':id',
+          component: () => import('views/singer-detail/singer-detail')
+        }
+      ]
     }
   ]
 })
