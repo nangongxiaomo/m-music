@@ -23,11 +23,11 @@ export default {
     },
     cancelBtnText: {
       type: String,
-      default: ''
+      default: '取消'
     },
     confirmBtnText: {
       type: String,
-      default: ''
+      default: '确定'
     }
   },
   data() {
@@ -36,18 +36,18 @@ export default {
     }
   },
   methods: {
-    show(){
-      this.showFlag=true
+    show() {
+      this.showFlag = true
     },
-    hide(){
-      this.showFlag=false
+    hide() {
+      this.showFlag = false
     },
     cancel() {
-      this.showFlag = false
+      this.hide()
       this.$emit('cancel')
     },
     confirm() {
-      this.showFlag = false
+      this.hide()
       this.$emit('comfirm')
     }
   }
