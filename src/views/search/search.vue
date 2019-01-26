@@ -9,7 +9,12 @@
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
-              <li @click="addQuery(item.k)" class="item" v-for="item of hotKeyList" :key="item.n">
+              <li
+                @click="addQuery(item.k)"
+                class="item"
+                v-for="(item, index) of hotKeyList"
+                :key="index"
+              >
                 <span v-html="item.k"></span>
               </li>
             </ul>
@@ -52,24 +57,23 @@ import Comfirm from 'base/comfirm/comfirm'
 import { getHotKey } from 'api/search'
 import { ERR_OK } from 'api/config'
 import Suggest from 'views/suggest/suggest'
-import { playListMixin } from 'common/js/mixin'
-import { mapActions, mapGetters } from 'vuex'
+import { playListMixin, searchMixin } from 'common/js/mixin'
+import { mapActions } from 'vuex'
+
 export default {
-  mixins: [playListMixin],
+  mixins: [playListMixin, searchMixin],
   created() {
     this._getHotKey()
   },
   data() {
     return {
-      hotKeyList: [],
-      query: ''
+      hotKeyList: []
     }
   },
   computed: {
     shortCut() {
       return this.hotKeyList.concat(this.searchHistory)
-    },
-    ...mapGetters(['searchHistory'])
+    }
   },
   methods: {
     //mixin内定义的方法
@@ -78,23 +82,12 @@ export default {
       this.$refs.searchResult.style.bottom = bottom
       this.$refs.shorcutWrapper.style.bottom = bottom
       this.$refs.suggest.refresh()
-      
     },
-    blurInput() {
-      this.$refs.searchBox.blur()
-    },
-    onQueryChange(query) {
-      this.query = query
-    },
-    saveSearch() {
-      this.saveHistory(this.query)
-    },
+
     showComfirm() {
       this.$refs.comfirm.show()
     },
-    addQuery(key) {
-      this.$refs.searchBox.setQuery(key)
-    },
+
     _getHotKey() {
       getHotKey().then(res => {
         if (res.code === ERR_OK) {
@@ -102,7 +95,7 @@ export default {
         }
       })
     },
-    ...mapActions(['saveHistory', 'deleteSearchHistory', 'clearSearchHistory'])
+    ...mapActions(['clearSearchHistory'])
   },
   watch: {
     query(newQuery) {

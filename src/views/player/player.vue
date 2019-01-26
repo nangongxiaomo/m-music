@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import PlayList from 'views/play-list/play-list'
@@ -330,6 +330,7 @@ export default {
       // 监听 playing 这个事件可以确保慢网速或者快速切换歌曲导致的 DOM Exception
       this.songReady = true
       this.canLyricPlay = true
+      this.savePlayHistoryList(this.currentSong)
       // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
       if (this.currentLyric && !this.isPureMusic) {
         this.currentLyric.seek(this.currentTime * 1000)
@@ -398,7 +399,8 @@ export default {
     },
     ...mapMutations({
       setFullscreen: 'SET_FULL_SCREEN'
-    })
+    }),
+    ...mapActions(['savePlayHistoryList'])
   },
   watch: {
     currentSong: {

@@ -32,7 +32,7 @@
           </transition-group>
         </scroll-view>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click.stop="addSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -42,6 +42,7 @@
         </div>
       </div>
       <comfirm ref="comfirm" @comfirm="comfirmClear" text="是否清空播放列表" confirmBtnText="清空"></comfirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
@@ -49,6 +50,7 @@
 <script>
 import ScrollView from 'base/scroll-view/scroll-view'
 import Comfirm from 'base/comfirm/comfirm'
+import AddSong from 'views/add-song/add-song'
 import { mapActions } from 'vuex'
 import { playMode } from 'common/js/config'
 import { playerMixin } from 'common/js/mixin'
@@ -70,6 +72,9 @@ export default {
     }
   },
   methods: {
+    addSong() {
+      this.$refs.addSong.show()
+    },
     selectItem(item, index) {
       if (this.mode === playMode.random) {
         index = this.playList.findIndex(song => {
@@ -135,7 +140,8 @@ export default {
   },
   components: {
     ScrollView,
-    Comfirm
+    Comfirm,
+    AddSong
   }
 }
 </script>

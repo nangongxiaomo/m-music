@@ -1,7 +1,7 @@
 import * as types from './mutation-types'
 import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/utils'
-import { saveSearch, deleteSearch, clearSearch } from 'common/js/cache'
+import { saveSearch, deleteSearch, clearSearch, savePlayHistory } from 'common/js/cache'
 
 function findIndex(list, song) {
   return list.findIndex(item => {
@@ -54,6 +54,7 @@ export const insertSong = function({ commit, state }, song) {
 
   let currentsIndex = findIndex(sequenceList, currentSong) + 1
   let fsIndex = findIndex(sequenceList, song)
+  sequenceList.splice(currentsIndex, 0, song)
   if (fsIndex > -1) {
     if (currentsIndex > fsIndex) {
       sequenceList.splice(fsIndex, 1)
@@ -109,4 +110,8 @@ export const deleteSongList = function({ commit }, song) {
   commit(types.SET_SEQUCENCE_LIST, [])
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYING_STATE, false)
+}
+
+export const savePlayHistoryList = function({ commit }, playHistory) {
+  commit(types.SET_PLAY_HOSTORY, savePlayHistory(playHistory))
 }
