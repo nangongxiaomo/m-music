@@ -12,6 +12,10 @@ let router = new Router({
       redirect: '/recommend'
     },
     {
+      path: '/user',
+      component: () => import('views/user-center/user-center')
+    },
+    {
       path: '/recommend',
       component: () => import('views/recommend/recommend'),
       children: [

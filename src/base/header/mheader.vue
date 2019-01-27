@@ -1,9 +1,10 @@
 <template>
-  <div class="header">
-    <div class="center-head">
-      <div class="icon"></div>
-      <span class="title">酷听音乐</span>
-    </div>
+  <div class="m-header">
+    <div class="icon"></div>
+    <h1 class="text">酷听音乐</h1>
+    <router-link tag="div" class="mine" to="/user">
+      <i class="icon-mine"></i>
+    </router-link>
   </div>
 </template>
 
@@ -14,26 +15,34 @@ export default {}
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
-.header
-  height 45px
+.m-header
   position relative
-  display flex
-  align-items center
-  justify-content center
-  color #ffcd32
-  .center-head
-    display flex
-    align-items center
-    justify-content center
-    .icon
-      width 35px
-      height 32px
-      // bg-image('logo')
-      background url('../../common/image/default.png') no-repeat center center
-      background-size cover
-    .title
-      display inline-block
-      height 45px
-      line-height 45px
-      padding-left 10px
+  height 44px
+  text-align center
+  color $color-theme
+  font-size 0
+  .icon
+    display inline-block
+    vertical-align top
+    margin-top 6px
+    width 30px
+    height 32px
+    margin-right 9px
+    // bg-image('logo')
+    background url('../../common/image/default.png') no-repeat center center
+    background-size 30px 32px
+  .text
+    display inline-block
+    vertical-align top
+    line-height 44px
+    font-size $font-size-large
+  .mine
+    position absolute
+    top 0
+    right 0
+    .icon-mine
+      display block
+      padding 12px
+      font-size 20px
+      color $color-theme
 </style>
