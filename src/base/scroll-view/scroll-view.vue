@@ -31,6 +31,10 @@ export default {
     pullUp: {
       type: Boolean,
       default: false
+    },
+    pullDown: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -57,6 +61,13 @@ export default {
         this.scroll.on('scrollEnd', () => {
           if (this.scroll.y <= this.scroll.maxScrollY + 50) {
             this.$emit('scrollToEnd')
+          }
+        })
+      }
+      if (this.pullDown) {
+        this.scroll.on('scroll', () => {
+          if (this.scroll.y > 50) {
+            this.$emit('pullDown')
           }
         })
       }
@@ -93,4 +104,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+
 </style>

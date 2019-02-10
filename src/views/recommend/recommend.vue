@@ -1,6 +1,10 @@
 <template>
   <div class="recommend" ref="recommend">
-    <scroll-view :data="discList" class="recommend-content" ref="scroll">
+    <scroll-view
+      :data="discList"
+      class="recommend-content"
+      ref="scroll"
+    >
       <div>
         <div class="slider-wrapper" v-if="slider.length">
           <slider>
@@ -46,7 +50,7 @@ export default {
   data() {
     return {
       slider: [],
-      discList: []
+      discList: [],
     }
   },
   created() {
@@ -54,6 +58,9 @@ export default {
     this._getDiscList() //获取歌单列表
   },
   methods: {
+    pullDownReresh() {
+      console.log(11)
+    },
     //mixin内定义的方法
     handlePlayList(playList) {
       const bottom = playList.length > 0 ? '60px' : ''
@@ -102,6 +109,7 @@ export default {
   width 100%
   top 88px
   bottom 0
+  z-index -1
   .recommend-content
     height 100%
     overflow hidden
