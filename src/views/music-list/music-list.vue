@@ -38,7 +38,7 @@ import ScrollView from 'base/scroll-view/scroll-view'
 import Loading from 'base/loading/loading'
 import { mapActions } from 'vuex'
 import { playListMixin } from 'common/js/mixin'
-const maxHeight = 40
+const MAX_HEIGHT = 40
 export default {
   mixins: [playListMixin],
   props: {
@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     this.imageHeight = this.$refs.bgImage.clientHeight
-    this.minTranslateY = -this.imageHeight + maxHeight
+    this.minTranslateY = -this.imageHeight + MAX_HEIGHT
 
     this.$refs.list.$el.style['top'] = this.$refs.bgImage.clientHeight + 'px'
   },
@@ -120,7 +120,7 @@ export default {
       if (newY < this.minTranslateY) {
         zIndex = 10
         this.$refs.bgImage.style.paddingBottom = 0
-        this.$refs.bgImage.style.height = maxHeight + 'px'
+        this.$refs.bgImage.style.height = MAX_HEIGHT + 'px'
         this.$refs.btn.style.display = 'none'
       } else {
         this.$refs.bgImage.style.paddingBottom = '70%'
