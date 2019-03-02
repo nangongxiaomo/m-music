@@ -11,12 +11,13 @@ import { ERR_OK } from 'api/config'
 import Singer from 'common/js/Singer'
 import ListView from 'base/list-view/list-view'
 import { mapMutations } from 'vuex'
-import {playListMixin} from 'common/js/mixin'
+import { playListMixin } from 'common/js/mixin'
+
 const HOT_LENGTH = 10
 const HOT_NAME = '热门'
 
 export default {
-  mixins:[playListMixin],
+  mixins: [playListMixin],
   data() {
     return {
       singerList: []
